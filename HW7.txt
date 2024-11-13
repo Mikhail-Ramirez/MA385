@@ -1,0 +1,121 @@
+import math
+import scipy.stats as stats
+from sympy import symbols, Eq, solve, integrate
+
+# Problem 1: Uniform distribution constants and value
+def find_constants_uniform(a, b):
+    x = symbols('x')
+    m = 1 / (b - a)  # slope of the linear CDF
+    b_const = -m * a  # intercept
+    value = math.sqrt(m**2 + b_const**2)
+    return round(value, 2)
+
+# Problem 2: Solve for constant 'c' in the PDF
+def find_c_for_pdf():
+    x = symbols('x')
+    c = symbols('c')
+    pdf = c / (29 + x**2)
+    integral = pdf.integrate((x, -math.inf, math.inf))
+    equation = Eq(integral, 1)
+    c_value = solve(equation, c)[0]
+    return round(c_value, 2)
+
+# Problem 3: Variance of a continuous random variable
+def variance_continuous_random_variable():
+    x = symbols('x')
+    f_x = (6 / 53) * (5 * x - x**2)  # Updated PDF based on image
+    second_moment = integrate(x**2 * f_x, (x, 0, 5))
+    first_moment = integrate(x * f_x, (x, 0, 5))
+    variance = second_moment - first_moment**2
+    return round(variance, 2)
+
+# Problem 4: Probability of Y <= 6 for linear transformation
+def probability_linear_transform():
+    X_min, X_max = 0, 6
+    Y_target = 7
+    X_value = (Y_target - 4) / 3  # Y = 3X + 4, solve for X
+    prob = (X_value - X_min) / (X_max - X_min)
+    return round(prob, 2)
+
+# Problem 5: Exponential Distribution for Poisson Process
+def probability_exponential(lambda_rate, t):
+    prob = math.exp(-lambda_rate * t)
+    return round(prob, 2)
+
+# Problem 6: Gamma distribution CDF at x = 2
+def gamma_cdf(alpha, lambda_rate, x):
+    prob = stats.gamma.cdf(x, alpha, scale=1/lambda_rate)
+    return round(prob, 2)
+
+# Problem 7: Gamma distribution value computation
+def compute_gamma_value(alpha, lambda_rate):
+    value = math.sqrt(alpha**2 + lambda_rate**2)
+    return round(value, 2)
+
+# Problem 8: Normal distribution probability (P(X > σc + μ))
+def probability_greater_than_sigma_c(c, mu, sigma):
+    threshold = sigma * c + mu
+    prob = 1 - stats.norm.cdf(threshold, mu, sigma)
+    return round(prob, 2)
+
+# Problem 9: Compute P(X < -14) for normal distribution
+def probability_normal(mu, sigma, x_value):
+    prob = stats.norm.cdf(x_value, mu, sigma)
+    return round(prob, 3)
+
+# Problem 10: Probability P(7.0 < X < 11.0) for normal distribution
+def probability_between(mu, sigma, lower, upper):
+    prob = stats.norm.cdf(upper, mu, sigma) - stats.norm.cdf(lower, mu, sigma)
+    return round(prob, 3)
+
+# Example use cases
+if __name__ == "__main__":
+    # Problem 1: Uniform distribution constants
+    a, b = -13, 7
+    value = find_constants_uniform(a, b)
+    print("Problem 1 answer:", value)
+
+    # Problem 2: Find constant 'c'
+    c_value = find_c_for_pdf()
+    print("Problem 2 answer:", c_value)
+
+    # Problem 3: Variance for continuous random variable
+    variance = variance_continuous_random_variable()
+    print("Problem 3 answer:", variance)
+
+    # Problem 4: Probability P(Y <= 7)
+    prob_Y = probability_linear_transform()
+    print("Problem 4 answer:", prob_Y)
+
+    # Problem 5: Exponential distribution
+    lambda_rate = 5 / 5  # Rate of 5 likes every 5 minutes
+    t = 2  # Time after 2 minutes
+    prob_likes_after_2 = probability_exponential(lambda_rate, t)
+    print("Problem 5 answer:", prob_likes_after_2)
+
+    # Problem 6: Gamma distribution CDF at x = 2
+    alpha, lambda_rate, x = 2, 0.87, 2
+    gamma_prob = gamma_cdf(alpha, lambda_rate, x)
+    print("Problem 6 answer:", gamma_prob)
+
+    # Problem 7: Gamma distribution value computation
+    alpha = 1.37  # Given alpha
+    lambda_rate = 1 / math.sqrt(0.70)  # Given variance 0.70, lambda = 1/theta, theta=sqrt(var)
+    gamma_value = compute_gamma_value(alpha, lambda_rate)
+    print("Problem 7 answer:", gamma_value)
+
+    # Problem 8: Normal distribution probability P(X > σc + μ)
+    mu, sigma, c = -0.84, math.sqrt(2.29), 0.75
+    prob_sigma = probability_greater_than_sigma_c(c, mu, sigma)
+    print("Problem 8 answer:", prob_sigma)
+
+    # Problem 9: Normal distribution probability P(X < -14)
+    mu, sigma, x_value = 2, 8, -14
+    prob_x_less = probability_normal(mu, sigma, x_value)
+    print("Problem 9 answer:", prob_x_less)
+
+    # Problem 10: Probability P(7.0 < X < 11.0)
+    mu, sigma, lower, upper = 3, 3, 7.0, 11.0
+    prob_between = probability_between(mu, sigma, lower, upper)
+    print("Problem 10 answer:", prob_between)
+

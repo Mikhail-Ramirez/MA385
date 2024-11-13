@@ -1,0 +1,113 @@
+import math
+from scipy.stats import hypergeom, geom, poisson
+
+# Problem 1: Hypergeometric Distribution - Probability of 5 defective bulbs
+def problem_1(total_bulbs, defective_bulbs, selected_bulbs, exact_defective):
+    N = total_bulbs
+    D = defective_bulbs
+    n = selected_bulbs
+    k = exact_defective
+    # Hypergeometric PMF
+    prob = hypergeom.pmf(k, N, D, n)
+    return round(prob, 4)
+
+# Problem 2: Hypergeometric Distribution - At least two dog owners
+def problem_2(total_people, dog_owners, committee_size):
+    N = total_people
+    D = dog_owners
+    n = committee_size
+    # Find P(at least 2 dog owners) = 1 - P(0 dog owners) - P(1 dog owner)
+    prob_0 = hypergeom.pmf(0, N, D, n)
+    prob_1 = hypergeom.pmf(1, N, D, n)
+    prob_at_least_2 = 1 - (prob_0 + prob_1)
+    return round(prob_at_least_2, 4)
+
+# Problem 3: Conditional Probability - At least 1 green, exactly 4 green
+def problem_3(total_marbles, red_marbles, draw_marbles, exact_green):
+    N = total_marbles
+    red = red_marbles
+    green = N - red
+    n = draw_marbles
+    k = exact_green
+    # Conditional Probability: P(4 green | at least 1 green)
+    prob_4_green = hypergeom.pmf(k, N, green, n)
+    prob_0_green = hypergeom.pmf(0, N, green, n)
+    prob_at_least_1_green = 1 - prob_0_green
+    prob_conditional = prob_4_green / prob_at_least_1_green
+    return round(prob_conditional, 4)
+
+# Problem 4: Hypergeometric - Find N1
+def problem_4(N, n, variance):
+    # Variance formula for hypergeometric
+    def find_m(m):
+        numerator = n * (N - n) * m * (N - m)
+        denominator = N**2 * (N - 1)
+        return numerator / denominator
+    
+    for m in range(N+1):
+        if math.isclose(find_m(m), variance, rel_tol=1e-2):
+            return m
+
+# Problem 5: Geometric Distribution - P(X >= 5)
+def problem_5(mu, at_least):
+    p = 1 / mu
+    # Geometric: P(X >= 5)
+    prob = (1 - p) ** (at_least - 1)
+    return round(prob, 4)
+
+# Problem 6: Negative Binomial Distribution identification
+def problem_6():
+    # Variables listed, identify negative binomial cases
+    cases = {
+        'A': '5-card draw poker for royal flush',
+        'B': 'Basketball player makes exactly 3 baskets in free throws',
+        'C': '5-card hand drawn (hearts count)',
+        'D': 'Total baskets out of 30 attempts',
+        'E': 'Drawing blue poker chips (fixed number)',
+        'F': 'Basketball player makes exactly 1 basket in free throws'
+    }
+    # Negative Binomial distribution applies to cases where we count the number of trials until a fixed number of successes.
+    negative_binomial_cases = ['A', 'B', 'F']
+    return negative_binomial_cases
+
+# Problem 7: Negative Binomial - Dart Throwing
+def problem_7(bullseye_prob, attempts, successes):
+    p = bullseye_prob
+    # Negative binomial: P(3 successes in <= 6 attempts)
+    prob = sum([math.comb(attempts-1, r-1) * (p**r) * ((1-p)**(attempts-r)) for r in range(successes, attempts+1)])
+    return round(prob, 4)
+
+# Problem 8: Geometric Distribution - Bowling strikes
+def problem_8(strike_prob, required_strikes, more_than_attempts):
+    p = strike_prob
+    # Geometric distribution: P(X > 7)
+    prob_more_than_7 = (1 - p) ** more_than_attempts
+    return round(prob_more_than_7, 4)
+
+# Problem 9: Poisson Approximation
+def problem_9(n, p, k1, k2):
+    # Poisson approximation for binomial: lambda = n * p
+    lambd = n * p
+    prob_5 = poisson.pmf(k1, lambd)
+    prob_6 = poisson.pmf(k2, lambd)
+    return round(prob_5 + prob_6, 4)
+
+# Problem 10: Poisson - Second moment
+def problem_10(lambd):
+    # Second moment for Poisson: E(X^2) = lambda^2 + lambda
+    second_moment = lambd**2 + lambd
+    return round(second_moment, 4)
+
+# Test the functions with some inputs
+if __name__ == "__main__":
+    print("Problem 1:", problem_1(120, 25, 27, 5))
+    print("Problem 2:", problem_2(98, 19, 15))
+    print("Problem 3:", problem_3(79, 64, 9, 4))
+    print("Problem 4:", problem_4(105, 82, 3.1))
+    print("Problem 5:", problem_5(3.03, 5))
+    print("Problem 6:", problem_6())
+    print("Problem 7:", problem_7(0.38, 6, 3))
+    print("Problem 8:", problem_8(0.69, 4, 7))
+    print("Problem 9:", problem_9(1000, 0.004, 5, 6))
+    print("Problem 10:", problem_10(10))
+

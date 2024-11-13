@@ -4,13 +4,13 @@ import numpy as np
 
 # Problem 1
 # Given parameters
-rho_1 = 0.99  # Correlation coefficient
+rho_1 = math.sqrt(0.84)  # Correlation coefficient is the square root of 0.84
 def problem_1():
     return round(rho_1, 2)
 
 # Problem 2
 # Given parameters
-rho_2 = 0.44
+rho_2 = 0.70
 sigma_x_2 = 1  # Standard deviation of X
 sigma_y_2 = 1  # Standard deviation of Y
 def problem_2():
@@ -19,20 +19,20 @@ def problem_2():
 
 # Problem 3
 # Given parameters
-mu_x_3 = 4
-mu_y_3 = -3
-sigma_x_squared_3 = 18
-sigma_y_squared_3 = 4
+mu_x_3 = 2
+mu_y_3 = -8
+sigma_x_squared_3 = 13
+sigma_y_squared_3 = 5
 def problem_3():
-    c3 = -mu_y_3 / sigma_y_squared_3
-    return round(c3, 2)
+    c2 = -mu_x_3 / sigma_x_squared_3
+    return round(c2, 2)
 
 # Problem 4
 # Given parameters
 mu_x_4 = 0
 sigma_x_squared_4 = 16
-lower_bound_x = -4
-upper_bound_x = 3
+lower_bound_x = -5
+upper_bound_x = 2
 def problem_4():
     sigma_x_4 = math.sqrt(sigma_x_squared_4)
     p_x = stats.norm.cdf(upper_bound_x, mu_x_4, sigma_x_4) - stats.norm.cdf(lower_bound_x, mu_x_4, sigma_x_4)

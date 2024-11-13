@@ -1,0 +1,71 @@
+import math
+import scipy.stats as stats
+import numpy as np
+
+# Problem 1
+# Given parameters
+rho_1 = 0.99  # Correlation coefficient
+def problem_1():
+    return round(rho_1, 2)
+
+# Problem 2
+# Given parameters
+rho_2 = 0.44
+sigma_x_2 = 1  # Standard deviation of X
+sigma_y_2 = 1  # Standard deviation of Y
+def problem_2():
+    c1 = 1 / (2 * math.pi * sigma_x_2 * sigma_y_2 * math.sqrt(1 - rho_2**2))
+    return round(c1, 3)
+
+# Problem 3
+# Given parameters
+mu_x_3 = 4
+mu_y_3 = -3
+sigma_x_squared_3 = 18
+sigma_y_squared_3 = 4
+def problem_3():
+    c3 = -mu_y_3 / sigma_y_squared_3
+    return round(c3, 2)
+
+# Problem 4
+# Given parameters
+mu_x_4 = 0
+sigma_x_squared_4 = 16
+lower_bound_x = -4
+upper_bound_x = 3
+def problem_4():
+    sigma_x_4 = math.sqrt(sigma_x_squared_4)
+    p_x = stats.norm.cdf(upper_bound_x, mu_x_4, sigma_x_4) - stats.norm.cdf(lower_bound_x, mu_x_4, sigma_x_4)
+    return round(p_x, 3)
+
+# Problem 5
+# Given parameters
+mu_x_5 = 0
+mu_y_5 = 0
+sigma_x_squared_5 = 33
+sigma_y_squared_5 = 16
+rho_5 = 0.4
+x_value_5 = 15
+def problem_5():
+    conditional_expectation_y_given_x = mu_y_5 + rho_5 * (math.sqrt(sigma_y_squared_5 / sigma_x_squared_5)) * (x_value_5 - mu_x_5)
+    return round(conditional_expectation_y_given_x, 2)
+
+# Problem 6
+# Given parameters
+mu_x_6 = 0
+mu_y_6 = 0
+sigma_x_squared_6 = 25
+sigma_y_squared_6 = 19
+rho_6 = 0.8
+x_value_6 = 18
+def problem_6():
+    conditional_variance_y_given_x = sigma_y_squared_6 * (1 - rho_6**2)
+    return round(conditional_variance_y_given_x, 2)
+
+# Run each problem's solution
+print("Problem 1:", problem_1())
+print("Problem 2:", problem_2())
+print("Problem 3:", problem_3())
+print("Problem 4:", problem_4())
+print("Problem 5:", problem_5())
+print("Problem 6:", problem_6())
